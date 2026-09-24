@@ -11,9 +11,10 @@ The classical decisive-coalition argument:
 
 1. **Definitions** (`Arrow/Basic.lean`): ballots as injective rankings, profiles,
    social welfare functions, unanimity, IIA, decisive coalitions, dictatorship.
-2. **Field expansion** (`Arrow/FieldExpansion.lean`): a coalition decisive for
-   one pair of distinct alternatives is decisive for every such pair (via a
-   third alternative, unanimity, and IIA).
+2. **Field expansion** (`Arrow/FieldExpansion.lean`): weak decisiveness for one
+   ordered pair of distinct alternatives (decisiveness on polarized profiles)
+   is enough to make a coalition decisive for every such pair (via a third
+   alternative, unanimity, and IIA).
 3. **Group contraction** (`Arrow/GroupContraction.lean`): a decisive coalition
    with at least two voters contains a strictly smaller nonempty decisive
    coalition.

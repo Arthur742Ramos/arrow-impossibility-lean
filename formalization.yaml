@@ -37,6 +37,21 @@ sources:
       can simultaneously satisfy unanimity, independence of irrelevant
       alternatives, and non-dictatorship (Journal of Political Economy, 1950).
 
+related_formalizations:
+  - id: "https://palomar-registry.org/entry?id=PALOMAR-2026-09-01-000011&version=1"
+    relationship: "independent"
+    note: >-
+      Joris Roos's registered Palomar entry "Arrow's theorem via Fourier
+      analysis" (PALOMAR-2026-09-01-000011, v1) proves the theorem for
+      three-candidate elections via the Fourier-analytic route (Kalai's
+      argument, following O'Donnell's "Analysis of Boolean Functions" Sec.
+      2.5), with a single voting rule applied to every pairwise election.
+      This development is independent of it: it proves the theorem in full
+      generality (finitely many voters, any finite alternative set with at
+      least three alternatives) via the classical decisive-coalition
+      argument (field expansion and group contraction), so the two
+      formalizations differ in scope, proof method, and statement shape.
+
 status:
   scope: >-
     The library formalizes ballots as injective rankings, profiles, social
@@ -98,11 +113,16 @@ alignment:
       module: "Arrow/Basic.lean"
       status: "defined"
       note: "Society's x-vs-y ranking depends only on voters' x-vs-y rankings."
+    - source: "Weakly decisive coalition (pair)"
+      lean: "Arrow.WeakDecisive"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "A coalition whose unanimous x-over-y ranking forces society's x-over-y ranking on polarized profiles (the rest of the electorate ranks y above x)."
     - source: "Decisive coalition (pair)"
       lean: "Arrow.DecisivePair"
       module: "Arrow/Basic.lean"
       status: "defined"
-      note: "A coalition whose unanimous x-over-y ranking forces society's."
+      note: "A coalition whose unanimous x-over-y ranking forces society's, on arbitrary profiles."
     - source: "Decisive coalition"
       lean: "Arrow.Decisive"
       module: "Arrow/Basic.lean"
@@ -112,7 +132,7 @@ alignment:
       lean: "Arrow.IsDictator"
       module: "Arrow/Basic.lean"
       status: "defined"
-      note: "One voter whose ballot always coincides with society's."
+      note: "One voter whose pairwise rankings always coincide with society's: for every profile and every ordered pair of alternatives, society ranks the pair as the voter does."
     - source: "Unanimity makes the whole electorate decisive"
       lean: "Arrow.Palomar.decisiveUniv"
       module: "Solution.lean"
@@ -122,7 +142,7 @@ alignment:
       lean: "Arrow.Palomar.fieldExpansion"
       module: "Solution.lean"
       status: "proved"
-      note: "A coalition decisive for one pair of distinct alternatives is decisive for every such pair, via a third alternative, unanimity, and IIA."
+      note: "Weak decisiveness for one ordered pair on polarized profiles suffices: such a coalition is decisive for every ordered pair of distinct alternatives, via a third alternative, unanimity, and IIA. (Distinct from Arrow.DecisivePair, which asserts the implication on arbitrary profiles.)"
     - source: "Group contraction lemma"
       lean: "Arrow.Palomar.groupContraction"
       module: "Solution.lean"
