@@ -14,10 +14,19 @@ except (OSError, UnicodeError, json.JSONDecodeError) as error:
     raise SystemExit(f"error: invalid Comparator config: {error}")
 
 required = set(config.get("theorem_names", [])) | set(config.get("definition_names", [])) | {
-    "NashBargaining.nashMaximizerExists",
-    "NashBargaining.nashMaximizerUnique",
-    "NashBargaining.nashSatisfiesAxioms",
-    "NashBargaining.axiomsCharacterizeNash",
+    "Arrow.Ballot",
+    "Arrow.ranksAbove",
+    "Arrow.Profile",
+    "Arrow.SWF",
+    "Arrow.Unanimous",
+    "Arrow.IIA",
+    "Arrow.DecisivePair",
+    "Arrow.Decisive",
+    "Arrow.IsDictator",
+    "Arrow.Palomar.decisiveUniv",
+    "Arrow.Palomar.fieldExpansion",
+    "Arrow.Palomar.groupContraction",
+    "Arrow.Palomar.arrowImpossibility",
 }
 allowed = set(config.get("permitted_axioms", []))
 expected_allowed = {"propext", "Quot.sound", "Classical.choice"}
@@ -37,7 +46,7 @@ for line in text.splitlines():
         name, body = match.groups()
         if name in seen:
             raise SystemExit(f"error: duplicate axiom report for {name}")
-        if not name.startswith("NashBargaining."):
+        if not name.startswith("Arrow."):
             raise SystemExit(f"error: unexpected declaration in library audit: {name}")
         seen.add(name)
         used_axioms.update(axiom.strip() for axiom in body.split(",") if axiom.strip())
@@ -70,6 +79,6 @@ if used_axioms != expected_allowed:
     )
 
 print(
-    f"Axiom audit passed for all {len(seen)} NashBargaining declarations; "
+    f"Axiom audit passed for all {len(seen)} Arrow declarations; "
     f"exact axiom set: {', '.join(sorted(used_axioms))}."
 )

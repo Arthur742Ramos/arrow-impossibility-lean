@@ -91,21 +91,21 @@ required_keys = {
 if not isinstance(comparator, dict) or set(comparator) != required_keys:
     raise SystemExit("error: comparator.json has an invalid key set")
 expected_theorems = [
-    "NashBargaining.Palomar.nashMaximizerExists",
-    "NashBargaining.Palomar.nashMaximizerUnique",
-    "NashBargaining.Palomar.nashSatisfiesAxioms",
-    "NashBargaining.Palomar.axiomsCharacterizeNash",
+    "Arrow.Palomar.decisiveUniv",
+    "Arrow.Palomar.fieldExpansion",
+    "Arrow.Palomar.groupContraction",
+    "Arrow.Palomar.arrowImpossibility",
 ]
 expected_definitions = [
-    "NashBargaining.Problem",
-    "NashBargaining.nashProduct",
-    "NashBargaining.IsNashMaximizer",
-    "NashBargaining.Solution",
-    "NashBargaining.Pareto",
-    "NashBargaining.Symmetric",
-    "NashBargaining.Invariance",
-    "NashBargaining.IIA",
-    "NashBargaining.NashAxioms",
+    "Arrow.Ballot",
+    "Arrow.ranksAbove",
+    "Arrow.Profile",
+    "Arrow.SWF",
+    "Arrow.Unanimous",
+    "Arrow.IIA",
+    "Arrow.DecisivePair",
+    "Arrow.Decisive",
+    "Arrow.IsDictator",
 ]
 if comparator["challenge_module"] != "Challenge" or comparator["solution_module"] != "Solution":
     raise SystemExit("error: Comparator modules must be Challenge and Solution")
@@ -135,9 +135,9 @@ solution = (root / "Solution.lean").read_text(encoding="utf-8")
 if re.search(r"\b(sorry|admit|oops)\b|^\s*(axiom|unsafe)\b", solution, re.MULTILINE):
     raise SystemExit("error: Solution.lean contains a proof placeholder, axiom, or unsafe declaration")
 
-library_files = sorted((root / "NashBargaining").rglob("*.lean"))
+library_files = sorted((root / "Arrow").rglob("*.lean"))
 if not library_files:
-    raise SystemExit("error: NashBargaining library has no Lean modules")
+    raise SystemExit("error: Arrow library has no Lean modules")
 for path in library_files:
     source = path.read_text(encoding="utf-8")
     if re.search(r"\b(sorry|admit|oops)\b|^\s*axiom\b", source, re.MULTILINE):
@@ -171,13 +171,13 @@ if not isinstance(sources, list) or not sources:
 valid_relationships = {"formalizes", "adapts", "independently-proves", "background"}
 if any(not isinstance(source, dict) or source.get("relationship") not in valid_relationships for source in sources):
     raise SystemExit("error: formalization.yaml contains an invalid source relationship")
-nash_doi = "https://doi.org/10.2307/1907266"
+arrow_doi = "https://doi.org/10.1086/256963"
 if not any(
     source.get("relationship") in {"formalizes", "adapts", "independently-proves"}
-    and nash_doi in (source.get("id"), source.get("location"))
+    and arrow_doi in (source.get("id"), source.get("location"))
     for source in sources
 ):
-    raise SystemExit("error: no formalization source cites Nash's 1950 paper")
+    raise SystemExit("error: no formalization source cites Arrow's 1950 paper")
 automation = metadata.get("automation")
 if not isinstance(automation, dict) or not isinstance(automation.get("methods"), list) or not automation["methods"]:
     raise SystemExit("error: automation.methods must be nonempty")
