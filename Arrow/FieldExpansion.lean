@@ -179,6 +179,16 @@ theorem fieldExpansion (F : SWF V A) (hU : Unanimous F) (hIIA : IIA F)
         weakOfDecisivePair F G a y hayD
       exact weak_expand_left F hU hIIA G a y b hay hab (Ne.symm hby) hayW
 
+namespace Palomar
+
+/-- Palomar-facing name for the field expansion lemma. -/
+theorem fieldExpansion (F : SWF V A) (hU : Unanimous F) (hIIA : IIA F)
+    (G : Finset V) (x y : A) (hxy : x ≠ y) (hWD : WeakDecisive F G x y)
+    (z : A) (hxz : x ≠ z) (hyz : y ≠ z) : Decisive F G :=
+  Arrow.fieldExpansion F hU hIIA G x y hxy hWD z hxz hyz
+
+end Palomar
+
 end
 
 end Arrow
