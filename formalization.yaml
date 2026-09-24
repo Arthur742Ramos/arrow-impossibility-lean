@@ -1,0 +1,151 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Arrow's impossibility theorem (general finite version)"
+  description: >-
+    Formalizes Arrow's impossibility theorem for finitely many voters and
+    finitely many alternatives (at least three): every social welfare function
+    satisfying unanimity and independence of irrelevant alternatives is
+    dictatorial. The proof follows the classical decisive-coalition argument:
+    field expansion (a coalition decisive for one pair is decisive for every
+    pair) and group contraction (a decisive coalition with at least two voters
+    contains a smaller decisive coalition), iterated down to a singleton
+    dictator. This is a reusable formalization artifact, not a claim of new
+    mathematics.
+  authors:
+    - "Arthur Freitas Ramos"
+  license: "BSD-3-Clause"
+  responsible_maintainers:
+    - "Arthur Freitas Ramos"
+
+classification:
+  arxiv: ["math.LO", "cs.GT"]
+  msc2020: ["91B14"]
+
+sources:
+  - title: "A Difficulty in the Concept of Social Welfare"
+    authors:
+      - "Kenneth J. Arrow"
+    id: "https://doi.org/10.1086/256963"
+    type: "article"
+    location: "https://doi.org/10.1086/256963"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
+    note: >-
+      Proves that no social welfare function over three or more alternatives
+      can simultaneously satisfy unanimity, independence of irrelevant
+      alternatives, and non-dictatorship (Journal of Political Economy, 1950).
+
+status:
+  scope: >-
+    The library formalizes ballots as injective rankings, profiles, social
+    welfare functions, the unanimity and IIA axioms, decisive coalitions, and
+    dictatorship; it proves the field expansion lemma, the group contraction
+    lemma, and the main impossibility theorem. Challenge.lean repeats the
+    compared statements with deliberate proof holes; those statement holes are
+    excluded from the implementation sorry_count.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Quot.sound", "Classical.choice"]
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["gpt-6-luna (Codex CLI)"]
+      framework: "Lean 4 and Mathlib"
+      tool_setup: "Pinned Lean/Mathlib builds, closure-safe Challenge compilation, and Comparator-ready metadata."
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "subscription-based"
+        hardware: "local machine"
+      prompting_notes: "The final definitions, statements, and proofs are checked by Lean's kernel."
+  spend_usd: "subscription-based"
+  notes: "AI assistance was used for proof engineering. The final definitions, statements, and proofs are checked by Lean's kernel."
+
+fidelity:
+  divergences: >-
+    Finite electorate and finite alternative set with at least three
+    alternatives; ballots are strict linear orders represented as injective
+    rankings into the naturals, which represent every strict linear order on a
+    finite type.
+
+alignment:
+  namespace: "Arrow.Palomar"
+  statements:
+    - source: "Ballot"
+      lean: "Arrow.Ballot"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "A voter's strict ranking: an injective map from alternatives to naturals (lower means ranked higher)."
+    - source: "Profile"
+      lean: "Arrow.Profile"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "A ballot for every voter."
+    - source: "Social welfare function"
+      lean: "Arrow.SWF"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "Maps every profile to a social ballot."
+    - source: "Unanimity"
+      lean: "Arrow.Unanimous"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "If every voter ranks x above y, so does society."
+    - source: "Independence of irrelevant alternatives"
+      lean: "Arrow.IIA"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "Society's x-vs-y ranking depends only on voters' x-vs-y rankings."
+    - source: "Decisive coalition (pair)"
+      lean: "Arrow.DecisivePair"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "A coalition whose unanimous x-over-y ranking forces society's."
+    - source: "Decisive coalition"
+      lean: "Arrow.Decisive"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "Decisive for every ordered pair of distinct alternatives."
+    - source: "Dictatorship"
+      lean: "Arrow.IsDictator"
+      module: "Arrow/Basic.lean"
+      status: "defined"
+      note: "One voter whose ballot always coincides with society's."
+    - source: "Unanimity makes the whole electorate decisive"
+      lean: "Arrow.Palomar.decisiveUniv"
+      module: "Solution.lean"
+      status: "proved"
+      note: "Directly from the unanimity axiom."
+    - source: "Field expansion lemma"
+      lean: "Arrow.Palomar.fieldExpansion"
+      module: "Solution.lean"
+      status: "proved"
+      note: "A coalition decisive for one pair of distinct alternatives is decisive for every such pair, via a third alternative, unanimity, and IIA."
+    - source: "Group contraction lemma"
+      lean: "Arrow.Palomar.groupContraction"
+      module: "Solution.lean"
+      status: "proved"
+      note: "A decisive coalition of at least two voters contains a strictly smaller nonempty decisive coalition."
+    - source: "Arrow's impossibility theorem"
+      lean: "Arrow.Palomar.arrowImpossibility"
+      module: "Solution.lean"
+      status: "proved"
+      note: "Unanimity plus IIA yields a dictator, by contracting the decisive electorate down to a singleton."
+
+acknowledgements: >-
+  Mathlib contributors; Kenneth J. Arrow for the original impossibility
+  theorem; and the Palomar Registry project for the statement/solution
+  Comparator workflow.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "none"
+  notes: >-
+    The implementation library and Solution are proof-hole-free under the
+    pinned local build. Challenge contains deliberate Palomar statement holes,
+    excluded from the implementation sorry_count. Hosted Comparator
+    verification, Palomar editorial review, and registration are separate
+    states and are not inferred from local compilation.
